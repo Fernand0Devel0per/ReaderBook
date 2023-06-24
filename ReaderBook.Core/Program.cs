@@ -1,9 +1,15 @@
+using ReaderBook.Core.DAL;
+using ReaderBook.Core.DAL.Interface;
+using ReaderBook.Core.Data.Context;
+using ReaderBook.Core.Data.Contexts.Interfaces;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+builder.Services.AddSingleton<IReaderBookDBContext, ReaderBookDBContext>();
+builder.Services.AddScoped<IBookDao, BookDao>();
 
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
