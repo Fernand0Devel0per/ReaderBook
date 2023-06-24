@@ -12,13 +12,16 @@ namespace ReaderBook.Core.Dtos.ValueObject.Book
 {
     public class Book : ValidatableObject
     {
-        [BsonId]
-        public ObjectId Id { get; set; }
+ 
+        public string Id { get; set; }
+
         [Required(ErrorMessage = "{0} is required")]
         public string Title { get; private set; }
+
         [Required(ErrorMessage = "{0} is required")]
         [EnumRange(typeof(BookGenre), ErrorMessage = "{0} value is not valid.")]
         public BookGenre Gender { get; private set; }
+
         [NotEmptyCollection(ErrorMessage = "The list of pages cannot be empty.")]
         public ICollection<Page> Pages { get; private set; }
 
