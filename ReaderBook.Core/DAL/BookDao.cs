@@ -4,12 +4,11 @@ using ReaderBook.Core.DAL.Interface;
 using ReaderBook.Core.Data.Contexts.Interfaces;
 using ReaderBook.Core.Domain.Book;
 
-namespace ReaderBook.Core.DAL
+namespace ReaderBook.Core.DAL;
+
+public class BookDao : GenericDAO<Book>, IBookDao
 {
-    public class BookDao : GenericDAO<Book>, IBookDao
+    public BookDao(IReaderBookDBContext context) : base(context.GetCollection<Book>())
     {
-        public BookDao(IReaderBookDBContext context) : base(context.GetCollection<Book>())
-        {
-        }
     }
 }

@@ -1,7 +1,6 @@
-﻿namespace ReaderBook.Core.DAL.Interface
-{
-    public interface IBookDao
-    {
+﻿namespace ReaderBook.Core.DAL.Interface;
 
-    }
+public interface IBookDao
+{
+
 }

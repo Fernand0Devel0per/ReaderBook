@@ -1,9 +1,8 @@
 ﻿using MongoDB.Driver;
 
-namespace ReaderBook.Core.Data.Contexts.Interfaces
+namespace ReaderBook.Core.Data.Contexts.Interfaces;
+
+public interface IReaderBookDBContext
 {
-    public interface IReaderBookDBContext
-    {
-        IMongoCollection<T> GetCollection<T>();
-    }
+    IMongoCollection<T> GetCollection<T>();
 }

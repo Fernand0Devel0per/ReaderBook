@@ -3,42 +3,41 @@ using System.ComponentModel.DataAnnotations;
 using System.Runtime.Serialization;
 using System.Text.Json;
 
-namespace ReaderBook.Core.Helpers.Exceptions
+namespace ReaderBook.Core.Helpers.Exceptions;
+
+[Serializable]
+public class CustomValidationException : Exception
 {
-    [Serializable]
-    public class CustomValidationException : Exception
+    public IEnumerable<ValidationResult> ValidationResults { get; }
+
+    public CustomValidationException(IEnumerable<ValidationResult> validationResults)
+        : base(SerializeErrors(validationResults))
     {
-        public IEnumerable<ValidationResult> ValidationResults { get; }
+        ValidationResults = validationResults;
+    }
 
-        public CustomValidationException(IEnumerable<ValidationResult> validationResults)
-            : base(SerializeErrors(validationResults))
-        {
-            ValidationResults = validationResults;
-        }
+    private static string SerializeErrors(IEnumerable<ValidationResult> validationResults)
+    {
+        var errorMessages = validationResults.SelectMany(vr => vr.MemberNames.Select(mn => new { Field = mn, Error = vr.ErrorMessage }));
+        return JsonSerializer.Serialize(errorMessages);
+    }
 
-        private static string SerializeErrors(IEnumerable<ValidationResult> validationResults)
-        {
-            var errorMessages = validationResults.SelectMany(vr => vr.MemberNames.Select(mn => new { Field = mn, Error = vr.ErrorMessage }));
-            return JsonSerializer.Serialize(errorMessages);
-        }
+    protected CustomValidationException(SerializationInfo info, StreamingContext context)
+        : base(info, context)
+    {
+        if (info == null)
+            throw new ArgumentNullException(nameof(info));
 
-        protected CustomValidationException(SerializationInfo info, StreamingContext context)
-            : base(info, context)
-        {
-            if (info == null)
-                throw new ArgumentNullException(nameof(info));
+        ValidationResults = (IEnumerable<ValidationResult>)info.GetValue(nameof(ValidationResults), typeof(IEnumerable<ValidationResult>));
+    }
 
-            ValidationResults = (IEnumerable<ValidationResult>)info.GetValue(nameof(ValidationResults), typeof(IEnumerable<ValidationResult>));
-        }
+    public override void GetObjectData(SerializationInfo info, StreamingContext context)
+    {
+        if (info == null)
+            throw new ArgumentNullException(nameof(info));
 
-        public override void GetObjectData(SerializationInfo info, StreamingContext context)
-        {
-            if (info == null)
-                throw new ArgumentNullException(nameof(info));
+        info.AddValue(nameof(ValidationResults), ValidationResults);
 
-            info.AddValue(nameof(ValidationResults), ValidationResults);
-
-            base.GetObjectData(info, context);
-        }
+        base.GetObjectData(info, context);
     }
 }
