@@ -1,4 +1,5 @@
 ﻿using MongoDB.Bson.IO;
+using ReaderBook.Core.Helpers.Exceptions.Base;
 using System.ComponentModel.DataAnnotations;
 using System.Runtime.Serialization;
 using System.Text.Json;
@@ -6,7 +7,7 @@ using System.Text.Json;
 namespace ReaderBook.Core.Helpers.Exceptions;
 
 [Serializable]
-public class CustomValidationException : Exception
+public class CustomValidationException : SerializableException
 {
     public IEnumerable<ValidationResult> ValidationResults { get; }
 
@@ -41,3 +42,5 @@ public class CustomValidationException : Exception
         base.GetObjectData(info, context);
     }
 }
+
+

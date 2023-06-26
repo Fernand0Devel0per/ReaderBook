@@ -1,11 +1,8 @@
-﻿using ReaderBook.Core.Dtos.Base;
-using ReaderBook.Core.Helpers.Enums;
-using ReaderBook.Core.Helpers.Exceptions;
+﻿using ReaderBook.Core.Helpers.Exceptions;
+using ReaderBook.Core.Models.Base;
 using System.ComponentModel.DataAnnotations;
-using System.Reflection;
-using System.Xml.Linq;
 
-namespace ReaderBook.Core.Dtos.ValueObject.Book;
+namespace ReaderBook.Core.Models.ValueObject.Book;
 
 public class Page : ValidatableObject
 {

@@ -1,6 +1,6 @@
 ﻿namespace ReaderBook.Core.DAL.Interface;
 
-public interface IBookDao
+public interface IBookDao<T> : IGenericDAO<T>
 {
 
 }

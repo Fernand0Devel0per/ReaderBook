@@ -4,13 +4,19 @@ using ReaderBook.Core.Data.Caching;
 using ReaderBook.Core.Data.Caching.Interface;
 using ReaderBook.Core.Data.Context;
 using ReaderBook.Core.Data.Contexts.Interfaces;
+using ReaderBook.Core.Domain.Book;
+using ReaderBook.Core.Helpers.AutoMapper;
 using ReaderBook.Core.Helpers.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddAutoMapper(typeof(MappingProfile).Assembly);
+
 builder.Services.AddSingleton<IReaderBookDBContext, ReaderBookDBContext>();
-builder.Services.AddScoped<IBookDao, BookDao>();
-builder.Services.AddScoped<IChachingService, ChachingService>();
+//builder.Services.AddScoped<IBookDao<BookSchema>, BookDao>();
+builder.Services.AddScoped(typeof(IBookDao<>), typeof(BookDao<>));
+
+builder.Services.AddScoped<ICachingService, CachingService>();
 
 builder.Services.AddStackExchangeRedisCacheFromConfiguration(builder.Configuration); 
 

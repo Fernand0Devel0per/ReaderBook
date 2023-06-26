@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace ReaderBook.Core.Dtos.Base;
+namespace ReaderBook.Core.Models.Base;
 
 public abstract class ValidatableObject
 {

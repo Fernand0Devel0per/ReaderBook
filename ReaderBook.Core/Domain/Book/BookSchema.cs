@@ -4,7 +4,7 @@ using ReaderBook.Core.Helpers.Enums;
 
 namespace ReaderBook.Core.Domain.Book;
 
-public class Book
+public class BookSchema
 {
     [BsonId]
     public ObjectId Id { get; set; }

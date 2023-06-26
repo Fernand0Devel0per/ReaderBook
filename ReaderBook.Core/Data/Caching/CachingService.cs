@@ -4,13 +4,13 @@ using ReaderBook.Core.Data.Caching.Interface;
 
 namespace ReaderBook.Core.Data.Caching;
 
-public class ChachingService : IChachingService
+public class CachingService : ICachingService
 {
     private readonly IDistributedCache _cache;
 
     private readonly DistributedCacheEntryOptions _options;
 
-    public ChachingService(IDistributedCache cache)
+    public CachingService(IDistributedCache cache)
     {
         _cache = cache;
         _options = new DistributedCacheEntryOptions

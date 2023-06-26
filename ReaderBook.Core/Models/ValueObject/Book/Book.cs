@@ -1,14 +1,10 @@
-﻿using MongoDB.Bson;
-using MongoDB.Bson.Serialization.Attributes;
-using ReaderBook.Core.Dtos.Base;
-using ReaderBook.Core.Helpers.Enums;
+﻿using ReaderBook.Core.Helpers.Enums;
 using ReaderBook.Core.Helpers.Exceptions;
 using ReaderBook.Core.Helpers.Validations;
+using ReaderBook.Core.Models.Base;
 using System.ComponentModel.DataAnnotations;
-using System.Reflection;
-using System.Xml.Linq;
 
-namespace ReaderBook.Core.Dtos.ValueObject.Book;
+namespace ReaderBook.Core.Models.ValueObject.Book;
 
 public class Book : ValidatableObject
 {
@@ -25,16 +21,16 @@ public class Book : ValidatableObject
     [NotEmptyCollection(ErrorMessage = "The list of pages cannot be empty.")]
     public ICollection<Page> Pages { get; private set; }
 
-    private Book(string name, BookGenre gender, ICollection<Page> pages)
+    private Book(string title, BookGenre gender, ICollection<Page> pages)
     {
-        Title = name;
+        Title = title;
         Gender = gender;
         Pages = pages;
     }
 
-    public static Book Create(string name, BookGenre gender, ICollection<Page> pages)
+    public static Book Create(string title, BookGenre gender, ICollection<Page> pages)
     {
-        var book = new Book(name, gender, pages);
+        var book = new Book(title, gender, pages);
 
         var validationResults = book.Validate();
 
