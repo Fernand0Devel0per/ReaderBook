@@ -18,6 +18,6 @@ public class ReaderBookDBContext : IReaderBookDBContext
 
     public IMongoCollection<T> GetCollection<T>()
     {
-        return _database.GetCollection<T>(nameof(T));
+        return _database.GetCollection<T>(typeof(T).Name);
     }
 }

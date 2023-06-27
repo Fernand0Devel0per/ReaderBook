@@ -2,7 +2,7 @@
 
 namespace ReaderBook.Core.Dtos.Book
 {
-    public class CreateBook
+    public class BookCreate
     {
         public string Title { get; set; }
 

@@ -2,7 +2,6 @@
 using MongoDB.Bson;
 using ReaderBook.Core.Domain.Book;
 using ReaderBook.Core.Dtos.Book;
-using ReaderBook.Core.Helpers.Enums;
 using ReaderBook.Core.Helpers.Extensions;
 using ReaderBook.Core.Models.ValueObject.Book;
 
@@ -12,22 +11,30 @@ namespace ReaderBook.Core.Helpers.AutoMapper
     {
 
 
-        public MappingProfile(IMapper mapper)
+        public MappingProfile()
         {
-
+          
             CreateMap<Book, BookSchema>()
                .ForMember(dest => dest.Id, opt => opt.Ignore())
                .ForMember(dest => dest.Gender, opt => opt.MapFrom(src => (int)src.Gender))
                .ForMember(dest => dest.Pages, opt => opt.MapFrom(src => src.Pages));
 
-            CreateMap<BookSchema, Book>()
-                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id.ToString()))
-                .ForMember(dest => dest.Title, opt => opt.MapFrom(src => src.Title))
-                .ForMember(dest => dest.Gender, opt => opt.MapFrom(src => (BookGenre)src.Gender))
+            CreateMap<Book, BookSchema>()
+                .ForMember(dest => dest.Id, opt => opt.Ignore())
+                .ForMember(dest => dest.Gender, opt => opt.MapFrom(src => (int)src.Gender))
                 .ForMember(dest => dest.Pages, opt => opt.MapFrom(src => src.Pages))
-                .ConstructUsing(src => Book.Create(src.Title, (BookGenre)src.Gender,
-                    mapper.Map<ICollection<BookSchema.Page>, ICollection<Page>>(src.Pages)))
-                .ForAllMembers(opt => opt.Condition((src, dest, srcMember) => false));
+                .ConstructUsing(dest => new BookSchema
+                {
+                    Id = ObjectId.GenerateNewId(),
+                    Title = dest.Title,
+                    Gender = (int)dest.Gender,
+                    Pages = dest.Pages.Select(page => new BookSchema.Page
+                    {
+                        Number = page.Number,
+                        Content = page.Content
+                    }).ToList()
+                })
+                .ForAllMembers(opt => opt.Condition((src, dest, srcMember) => srcMember != null));
 
             CreateMap<BookSchema, BookResponse>()
                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id.ToString()))

@@ -6,9 +6,9 @@ using ReaderBook.Core.Domain.Book;
 
 namespace ReaderBook.Core.DAL;
 
-public class BookDao : GenericDAO<BookSchema>, IBookDao<BookSchema>
+public class BookDao<T> : GenericDAO<T>, IBookDao<T>
 {
-    public BookDao(IReaderBookDBContext context) : base(context.GetCollection<BookSchema>())
+    public BookDao(IReaderBookDBContext context) : base(context.GetCollection<T>())
     {
     }
 }

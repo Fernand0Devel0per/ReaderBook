@@ -59,20 +59,21 @@ namespace ReaderBook.Core.BLL
         public async Task<BookResponse> InsertAsync(BookCreate book)
         {
             var bookModel = Book.Create(book.Title, book.Gender.ToBookGenre(), _mapper.Map<ICollection<Page>>(book.Pages));
-            var bookSchema = _mapper.Map<BookSchema>(book);
+            var bookSchema = _mapper.Map<BookSchema>(bookModel);
 
             await _bookDao.InsertAsync(bookSchema);
 
             return _mapper.Map<BookResponse>(bookSchema);
         }
 
-        public async Task UpdateAsync(Book book, string id)
+        public async Task UpdateAsync(BookCreate bookCreate, string id)
         {
-            var bookSchema = _mapper.Map<BookSchema>(book);
+            var bookModel = Book.Create(bookCreate.Title, bookCreate.Gender.ToBookGenre(), _mapper.Map<ICollection<Page>>(bookCreate.Pages));
+            var bookSchema = _mapper.Map<BookSchema>(bookModel);
             
             await _bookDao.UpdateAsync(bookSchema);
 
-            await _cache.RemoveAsync(book.Id);
+            await _cache.RemoveAsync(id);
         }
 
         public async Task DeleteAsync(string id)
